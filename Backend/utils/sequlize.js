@@ -1,8 +1,9 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 const sequelize = new Sequelize(process.env.DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: "mysql",
+    logging: false, // to print log messages (sql queries) in console
     port: process.env.DB_PORT,
 });
 
@@ -32,9 +33,9 @@ let findAllQuery = async (options) => {
     try {
         // let data = await defineQuery(options).findAll();
         let data = await sequelize.define(
-            
 
-        ).findAll();
+
+        ).findAll(options);
         return data;
 
     } catch (error) {
@@ -42,6 +43,17 @@ let findAllQuery = async (options) => {
     }
 }
 
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.taskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
+
+db.sequelize.sync({
+    force: false
+});
+
 module.exports = {
-    findAllQuery
+    findAllQuery,
+    db
 }

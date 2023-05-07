@@ -16,7 +16,7 @@ app.use(urlencoded({ extended: true }));
 
 // Routes
 const register = require('./routes/auth');
-const task = require('./routes/task');
+const task = require('./routes/taskCategories');
 const project = require('./routes/project');
 
 app.use('/fyp',
