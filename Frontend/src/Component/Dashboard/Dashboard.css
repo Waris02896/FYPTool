@@ -1,0 +1,30 @@
+html{
+    background-color: rgb(10, 157, 177);
+}
+.cross button{
+    align-content: right;
+}
+.container-fluid{
+    background-color: rgb(10, 157, 177);
+    justify-content: right;
+}
+.heading{
+    font:bold;
+    font-size:x-large;
+    text-align: left;
+    right:auto;
+}
+.btn btn-warning px-5 font-weight-bold{
+    min-width: 100px;
+    width: auto;
+    height: 30px;
+    letter-spacing: 0.5px;
+    line-height: 20px;
+    padding: 0 20px 0 20px;
+    font-size: 12px;
+    font-family: "Open Sans Condensed";
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 3px;
+    
+}

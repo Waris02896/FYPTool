@@ -1,0 +1,153 @@
+/* Create Project Page */
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  position: relative;
+}
+
+li div {
+  margin-bottom: 0.5rem;
+}
+
+button[name="edit"]{
+  background-color: #4f8aff; /* Green background */
+  border: none; /* Remove border */
+  color: white; /* White text */
+  padding: 10px 20px; /* Some padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make it inline */
+  font-size: 16px; /* Increase font size */
+  margin: 10px; /* Add some margin */
+  cursor: pointer; /* Add pointer cursor on hover */
+}
+button[name="delete"] {
+  background-color: #ff4f58; /* Green background */
+  border: none; /* Remove border */
+  color: white; /* White text */
+  padding: 10px 20px; /* Some padding */
+  text-align: center; /* Center text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make it inline */
+  font-size: 16px; /* Increase font size */
+  margin: 10px; /* Add some margin */
+  cursor: pointer; /* Add pointer cursor on hover */
+}
+button[name="delete"]:hover {
+  background-color: #ff0037; /* Darker green on hover */
+}
+
+
+li a {
+  display: inline-block;
+  background-color: #4f8aff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+li a:hover {
+  background-color: #4f6aff;
+}
+
+button {
+  background-color: #4f8aff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #4f6aff;
+}
+
+/* Modal */
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: rgb(247, 247, 247);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal label {
+  color: #444;
+}
+
+.modal input{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 16px;
+}
+.modal textarea{
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 16px;
+}
+.modal select {
+  position:  relative;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #000000;
+  font-size: 16px;
+  top: 14px;
+  height: 5;
+  
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-buttons button {
+  padding: 10px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modal-buttons button:first-of-type {
+  background-color: #ddd;
+  color: #333;
+}
+
+.modal-buttons button:last-of-type {
+  background-color: #ddd;
+  color: #333;
+}

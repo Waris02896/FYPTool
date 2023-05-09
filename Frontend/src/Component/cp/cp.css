@@ -1,0 +1,42 @@
+/* .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    margin-right: 10px;
+  }
+  
+  input[type="text"] {
+    padding: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin-right: 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: lightgray;
+  }
+  
+  .list {
+    margin-top: 20px;
+    list-style-type: none;
+    width: 80%;
+  }
+  
+  li {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid gray;
+    border-radius: 5px;
+  }
+   */

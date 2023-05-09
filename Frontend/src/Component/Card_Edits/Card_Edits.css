@@ -1,0 +1,78 @@
+.card_editable{
+    width: 100%;
+  
+}
+
+.editable_display{
+    background-color: #f8f8f8f8;
+    border-radius: 3px;
+    padding: 10px;
+    text-align: center;
+    cursor: default;
+}
+
+.editable_display:hover {
+    background-color: #ccc;
+}
+
+.edit{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+   
+}
+
+.edit input{
+    border-radius: 10px;
+    background-color: white;
+    padding: 10px;
+    font-size: 1rem;
+    outline: none;
+    border: 1 px solid #1379ec;
+    color: black;
+}
+.edit input[type= "text"] {
+    background: solid white;
+}
+.edit_bottom{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.edit_bottom button{
+    outline: none;
+    border: none;
+    color: #fff;
+    background-color: #1379ec;
+    transition: 100ms ease;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.edit_bottom button:hover{
+    background-color: #053876;
+}
+.edit_bottom button svg{
+    cursor: pointer;
+}
+
+.edit_bottom button:active {
+    cursor: pointer;
+    transform: translateY(2px);
+  }
+  
+  
+.edit_bottom .closeIcon {
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    
+  }
+  
+  .edit_bottom .closeIcon:hover {
+   
+    color: red;
+  }
+  

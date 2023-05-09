@@ -1,0 +1,35 @@
+html{
+    background-color: rgb(10, 157, 177);
+}
+.cross_button{
+    align-content:right;
+    right:auto;
+}
+.button{
+    align-items: right;
+}
+.container-fluid{
+    background-color: rgb(10, 157, 177);
+}
+input[type= "text"]
+{
+    background: transparent;
+}
+input[type= "text"]:focus
+{
+    background: transparent;
+}
+.form-control{
+    min-width: 100px;
+    width: auto;
+    height: 30px;
+    letter-spacing: 0.5px;
+    line-height: 20px;
+    padding: 0 20px 0 20px;
+    font-size: 12px;
+    font-family: "Open Sans Condensed";
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 3px;
+    
+}

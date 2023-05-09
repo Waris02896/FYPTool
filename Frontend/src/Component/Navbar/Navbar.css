@@ -1,0 +1,39 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: skyblue;
+    color: rgb(18, 17, 17);
+    padding: 10px;
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+  }
+  
+  .navbar-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-menu-item {
+    margin-left: 20px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .navbar-menu-item:last-child {
+    margin-right: 0;
+  }
+  
+  .navbar-menu-item a {
+    color: rgb(21, 20, 20);
+    text-decoration: none;
+  }
+  
+  .navbar-menu-item a:hover {
+    color: rgb(120, 20, 20);
+  }
+  
