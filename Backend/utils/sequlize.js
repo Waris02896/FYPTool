@@ -47,10 +47,11 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.taskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
+// db.TaskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
+db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 
 db.sequelize.sync({
-    force: false
+    force: true
 });
 
 module.exports = {

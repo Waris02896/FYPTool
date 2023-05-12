@@ -1,5 +1,5 @@
 const { findAllQuery, db } = require("../../utils/sequlize");
-const taskCategories = db.taskCategories;
+const taskCategories = db.TaskCategories;
 // var db = require('../../utils/sequlize');
 
 

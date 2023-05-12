@@ -1,7 +1,7 @@
 const transport = require('nodemailer');
-
 async function _sendMail(option) {
 
+    console.log(`option: ${option}`)
     var transportHost = {
         host: process.env.HOST,
         port: process.env.MAIL_PORT,
@@ -23,7 +23,8 @@ async function _sendMail(option) {
 
     const response = await trans.sendMail(
         mailOptions
-    );
+    )
+    console.log(response);
 }
 
 exports._sendMail = _sendMail

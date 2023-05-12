@@ -1,26 +1,26 @@
-module.exports = (sequlize, DataTypes) =>{
+module.exports = (sequlize, DataTypes) => {
     const taskCategories = sequlize.define("taskCategories", {
-        taskCategory_id:{
+        taskCategory_id: {
             type: DataTypes.STRING,
             primaryKey: true,
             allowNull: false,
-            validate:{
-                notNull:{
+            validate: {
+                notNull: {
                     msg: "taskCategory_id is required"
                 }
             }
         },
-        taskCategory_name:{
+        taskCategory_name: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
-            validate:{
-                notNull:{
+            validate: {
+                notNull: {
                     msg: "taskCategory_id is required"
                 }
             }
         },
-        taskCategory_icon:{
+        taskCategory_icon: {
             type: DataTypes.STRING,
             // allowNull: false,
             // validate:{
@@ -29,7 +29,7 @@ module.exports = (sequlize, DataTypes) =>{
             //     }
             // }
         },
-        taskCategory_color:{
+        taskCategory_color: {
             type: DataTypes.STRING,
             // allowNull: false,
             // validate:{
