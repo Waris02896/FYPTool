@@ -51,7 +51,7 @@ db.sequelize = sequelize;
 db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 
 db.sequelize.sync({
-    force: true
+    force: false
 });
 
 module.exports = {

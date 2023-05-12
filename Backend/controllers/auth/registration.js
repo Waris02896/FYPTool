@@ -11,11 +11,34 @@ exports.signup = async (req, res) => {
     if (reqData.user.password == reqData.user.confirmPassword) {
         reqData.user.password = await bcrypt.hashSync(reqData.user.password, await bcrypt.genSaltSync(parseInt(process.env.SALT)));
 
+        let user_id;
+        let usersRecord = await users.findAll(
+            {
+                limit:1,
+                order:[
+                    [
+                        'createdAt', 'DESC'
+                    ]
+                ]
+            }
+        )
+        .then((usersRecord)=>{
+            if(usersRecord.length >= 1){
+                let user = usersRecord[0].user_id.split('-')
+                user_id = (parseInt(user[user.length - 1])+1).toString().padStart(8,0);
+            }else if(usersRecord.length == 0){
+                user_id = (0).toString().padStart(8,0)
+            }
+        })
+
+        // reqData.user.email = reqData.user.firstname.substring(0,3)+user.lastname.substring(0,3) + 
+
         let data = await users.findOrCreate({
             where: {
                 email: reqData.user.email
             },
             defaults: {
+                user_id: `${reqData.user.firstname.substring(0,3)}-${reqData.user.lastname.substring(0,3)}-${user_id}`,
                 firstname: reqData.user.firstname,
                 lastname: reqData.user.lastname,
                 email: reqData.user.email,

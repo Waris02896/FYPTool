@@ -1,83 +1,104 @@
-const db = require("../../utils/database_connection");
-const { email } = require("../../data/models/Auth/users");
-const { _sendMail } = require("../../utils/send_email");
-const mail = require("../../data/models/Auth/mail");
-const err = require('http-errors');
+const { where } = require("sequelize");
+const { db } = require("../../utils/sequlize");
 
-exports.verifyemail = (req, res) => {
-    const id = req.query.id;
+const users = db.Users;
 
-    db.query('SELECT user_id, verified FROM users WHERE user_id = ?', [id], async (error, result) => {
-        if (error) {
-            return res.json({
-                data: {
-                    data: {
+// const db = require("../../utils/database_connection");
+// const { email } = require("../../data/models/Auth/users");
+// const { _sendMail } = require("../../utils/send_email");
+// const mail = require("../../data/models/Auth/mail");
+// const err = require('http-errors');
 
-                    },
-                    error: {
-                        message: "Connection failed please try again",
-                        error
-                    }
-                }
-            })
-        } else if (result.length > 1) {
-            return res.status(207).json({
-                data: {
-                    data: {
-
-                    },
-                    error: {
-                        message: "Id contains multiple registeration"
-                    }
-                }
-            })
-        } else if (result.length <= 0) {
-            return res.status(200).json({
-                data: {
-                    data: {
-
-                    },
-                    error: {
-                        message: "No user available to verify"
-                    }
-                }
-            })
-        } else if (result[0].verified == "1") {
-            return res.status(200).json({
-                data: {
-                    data: {
-                        message: "Your account is already verified"
-                    }
-                }
-            })
-        }
-        else if (result.length == 1) {
-            db.query('UPDATE users SET ? where ?', [{ verified: 1 }, { user_id: id }], async (error, result) => {
-                if (error) {
-                    return res.status(408).json({
-                        data: {
-                            data: {
-                            },
-                            error: {
-                                message: "Connection timeout please try again",
-                                error
-                            }
-                        }
-                    })
-                } else if (result) {
-
-                    return res.status(200).json({
-                        data: {
-                            data: {
-                                message: "Your account successfully verified"
-                            }
-                        }
-                    })
-                }
-            })
+exports.verifyemail = async (req, res) =>{
+    const reqData = req.query;
+    return res.status(200).json({
+        message:{
+            reqData
         }
     })
+    const data = await users.find(
+        {
+            where:{
+                user_id: reqData.id
+            }
+        }
+    )
 }
+
+// exports.verifyemail = (req, res) => {
+//     const id = req.query.id;
+
+//     db.query('SELECT user_id, verified FROM users WHERE user_id = ?', [id], async (error, result) => {
+//         if (error) {
+//             return res.json({
+//                 data: {
+//                     data: {
+
+//                     },
+//                     error: {
+//                         message: "Connection failed please try again",
+//                         error
+//                     }
+//                 }
+//             })
+//         } else if (result.length > 1) {
+//             return res.status(207).json({
+//                 data: {
+//                     data: {
+
+//                     },
+//                     error: {
+//                         message: "Id contains multiple registeration"
+//                     }
+//                 }
+//             })
+//         } else if (result.length <= 0) {
+//             return res.status(200).json({
+//                 data: {
+//                     data: {
+
+//                     },
+//                     error: {
+//                         message: "No user available to verify"
+//                     }
+//                 }
+//             })
+//         } else if (result[0].verified == "1") {
+//             return res.status(200).json({
+//                 data: {
+//                     data: {
+//                         message: "Your account is already verified"
+//                     }
+//                 }
+//             })
+//         }
+//         else if (result.length == 1) {
+//             db.query('UPDATE users SET ? where ?', [{ verified: 1 }, { user_id: id }], async (error, result) => {
+//                 if (error) {
+//                     return res.status(408).json({
+//                         data: {
+//                             data: {
+//                             },
+//                             error: {
+//                                 message: "Connection timeout please try again",
+//                                 error
+//                             }
+//                         }
+//                     })
+//                 } else if (result) {
+
+//                     return res.status(200).json({
+//                         data: {
+//                             data: {
+//                                 message: "Your account successfully verified"
+//                             }
+//                         }
+//                     })
+//                 }
+//             })
+//         }
+//     })
+// }
 
 exports.resendMail = async (req, res) => {
     let _email = req.body;
