@@ -9,20 +9,65 @@ const users = db.Users;
 // const mail = require("../../data/models/Auth/mail");
 // const err = require('http-errors');
 
-exports.verifyemail = async (req, res) =>{
+exports.verifyemail = async (req, res) => {
     const reqData = req.query;
-    return res.status(200).json({
-        message:{
-            reqData
-        }
-    })
-    const data = await users.find(
+    // return res.status(200).json({
+    //     message:{
+    //         reqData
+    //     }
+    // })
+    const data = await users.findAll(
         {
-            where:{
+            limit: 1,
+            where: {
                 user_id: reqData.id
-            }
+            },
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
         }
     )
+        .then(async (data) => {
+            if (data.length >= 1) {
+                data = await users.update(
+                    {
+                        verified: 1
+                    },
+                    {
+                        where: {
+                            user_id: reqData.id
+                        }
+                    }
+                )
+                    .then((data) => {
+                        if (data.length >= 1) {
+                            return res.status(200).json({
+                                data: {
+                                    response: "Thank you for joining FYP Tool. Your account is verified. Now you can use feature of FYP Tool"
+                                }
+                            })
+                        }
+                    })
+                    .catch((err) => {
+                        return res.status(err.status || 500).json({
+                            error: {
+                                errorMessage: "Connection failed. Please try again",
+                                err
+                            }
+                        })
+                    })
+            }
+            else if (data.length == 0) {
+
+                return res.status(200).json({
+                    data: {
+                        response: "You are not registered to User FYP Tool with this email. Please Sign up first to FYP Tool"
+                    }
+                })
+            }
+        })
 }
 
 // exports.verifyemail = (req, res) => {

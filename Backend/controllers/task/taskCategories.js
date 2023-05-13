@@ -12,33 +12,26 @@ exports.getAllTaskCategories = async (req, res, next) => {
                 req.taskCategory_count = data.length;
 
                 return res.status(200).json({
-                    message: {
-                        data: {
-                            taskCategory: data
-                        }
+                    data: {
+                        taskCategory: data
                     }
                 });
             } else if (data == 0) {
                 req.taskCategory_count = 0;
 
                 return res.status(200).json({
-                    message: {
-                        data: "No task categories available"
+                    data: {
+                        response: "No task categories available"
                     }
                 });
             }
         })
         .catch((err) => {
             return res.status(err.status || 500).json({
-                data: {
-                    data: {
-
-                    },
                     error: {
                         errorMessage: "Task Category fetch unsuccessful",
                         err
                     }
-                }
             });
         });
 }
@@ -52,21 +45,17 @@ exports.createTaskCategory = async (req, res, next) => {
         .then((data) => {
             if (data.length > 0) {
                 return res.status(200).json({
-                    message: {
-                        data: {
-                            response: "Task Category added successfully",
-                            taskCategory: data
-                        }
+                    data: {
+                        response: "Task Category added successfully",
+                        taskCategory: data
                     }
                 });
             }
         }).catch((err) => {
             return res.status(err.status || 500).json({
-                message: {
-                    error: {
-                        errorMessage: "Task Category not added successfully",
-                        err
-                    }
+                error: {
+                    errorMessage: "Task Category not added successfully",
+                    err
                 }
             });
         })

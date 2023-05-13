@@ -2,15 +2,21 @@ const JWT = require('jsonwebtoken');
 const createError = require('http-errors');
 
 exports.jwtToken = (Option) => {
+    console.log(Option)
     return new Promise((resolve, reject) => {
-        const payload = {};
+        
+        const payload = {
+            Name: Option.fullName,
+            email: Option.email,
+            verified: Option.verified
+        };
 
         const secret = process.env.SESSION_SECRET;
 
         let options = {
-            expiresIn: "6h",
+            expiresIn: "1y",
             issuer: process.env.BASEURL,
-            audience: Option.userid
+            audience: Option.userid,
         }
 
         JWT.sign(payload, secret, options, (error, token) => {
@@ -57,6 +63,7 @@ exports.verifyAccessToken = (req, res, next) => {
                 });
             } else if (result) {
                 const _token = JWT.verify(token, process.env.SESSION_SECRET);
+                console.log(_token)
                 req.token = _token;
                 next();
             }
