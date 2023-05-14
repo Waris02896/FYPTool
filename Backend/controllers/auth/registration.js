@@ -3,11 +3,12 @@ const users = db.Users;
 const bcrypt = require('bcryptjs');
 const mail = require("../../data/models/Auth/mail");
 const { _sendMail } = require('../../utils/send_email');
+const statusCode = require("readable-http-status-codes");
 
 exports.signup = async (req, res) => {
-
     const reqData = req.body;
-
+    // const name = reqData.user;
+    // console.log(name)
     if (reqData.user.password == reqData.user.confirmPassword) {
         reqData.user.password = await bcrypt.hashSync(reqData.user.password, await bcrypt.genSaltSync(parseInt(process.env.SALT)));
 
@@ -44,7 +45,7 @@ exports.signup = async (req, res) => {
                 fullname: `${reqData.user.firstname} ${reqData.user.lastname}`,
                 email: reqData.user.email,
                 password: reqData.user.password,
-                pic: reqData.user.pic,
+                pic: "data/sample images/1.jpg",
                 verified: false,
             },
             attributes: { exclude: 'password' }
@@ -64,7 +65,6 @@ exports.signup = async (req, res) => {
                     mail.to = data[0].email;
                     mail.subject = "Verification for FYP Management System";
                     mail.body = `${process.env.BASEURL}/verifyaccount?id=${data[0].user_id}`;
-                    console.log(mail)
                     try {
                         await _sendMail(mail)
                     } catch (error) {
@@ -92,6 +92,12 @@ exports.signup = async (req, res) => {
                     }
                 })
             })
+    }else if(reqData.user.password != reqData.user.confirmPassword){
+        return res.status(statusCode.FORBIDDEN).json({
+            error:{
+                errorMessage:"Password and Confirm Password does not match"
+            }
+        })
     }
 }
 

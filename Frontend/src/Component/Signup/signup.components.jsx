@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import "./signupstyles.css";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profileType, setProfileType] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
 
     if (profileType === "") {
@@ -17,7 +18,33 @@ const SignUp = () => {
       return;
     }
 
-    const userData = { name, email, password, profileType };
+    const userData = {
+      user: {
+        firstname,
+        lastname,
+        email,
+        password,
+        confirmPassword,
+        profileType
+      }
+    };
+
+    let response = await fetch(
+      'http://localhost:3000/fyp/register',
+      {
+        method: 'POST',
+        body: JSON.stringify(userData),
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+      .then((response) => {
+        console.log(`Response: ${response}`);
+      })
+      .catch((err) => {
+        console.log(`Error: ${response}`);
+      })
     const users = JSON.parse(localStorage.getItem("users")) || [];
     users.push(userData);
     localStorage.setItem("users", JSON.stringify(users));
@@ -40,14 +67,25 @@ const SignUp = () => {
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
-          FullName:
+          First Name:
+          <br />
+          <input
+            type="text"
+            name="First Name"
+            placeholder="Enter your First Name"
+            value={firstname}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+        </label>
+        <label>
+          Last Name:
           <br />
           <input
             type="text"
             name="name"
-            placeholder="Enter your Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter your Last Name"
+            value={lastname}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </label>
         <br />
