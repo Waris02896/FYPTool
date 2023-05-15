@@ -35,9 +35,7 @@ exports.verifyemail = async (req, res) => {
         .then(async (data) => {
 
             if (data.length >= 1) {
-                console.log(data[0].user)
-                if (data.verified == 0 || data.verified == false) {
-                    console.log("2")
+                if (data[0].verified == 0 || data[0].verified == false) {
                     data = await users.update(
                         {
                             verified: 1
@@ -66,7 +64,7 @@ exports.verifyemail = async (req, res) => {
                                 }
                             });
                         })
-                }else if(data.verified == 1 || data.verified == true){
+                }else if(data[0].verified == 1 || data[0].verified == true){
                     console.log("3")
                     return res.status(statusCode.OK).json({
                         data:{
@@ -90,7 +88,7 @@ exports.verifyemail = async (req, res) => {
 exports.resendMail = async (req, res) => {
     let reqData = req.body;
 
-    let data = await findAll(
+    let data = await users.findAll(
         {
             where: {
                 email: reqData.email
@@ -103,33 +101,33 @@ exports.resendMail = async (req, res) => {
     )
         .then(async (data) => {
             if (data.length > 0) {
-                console.log("1");
-                if (data.verified == 0) {
-                    console.log("2");
+                if (data[0].verified == 0 || data[0].verified == false) {
                     mail.to = reqData.email;
                     mail.subject = "Verification for FYP Management System";
                     mail.body = `${process.env.BASEURL}/verifyaccount?id=${data.user_id}`;
                     mailData = await _sendMail(mail)
-                        .then((mailData) => {
-                            if (mailData) {
-                                return res.status(mailData.status).json({
-                                    data: {
-                                        response: "Verification mail sent successfully",
-                                        mailData
-                                    }
-                                });
-                            }
-                        })
-                        .catch((err) => {
-                            return res.status(err.status || 500).json({
-                                error: {
-                                    errorMessage: "Verification mail send unsuccessful",
-                                    err
-                                }
-                            });
-                        })
+                    console.log(mailData)
+                        // .then((mailData) => {
+                        //     console.log("hi")
+                        //     if (mailData) {
+                        //         return res.status(mailData.status).json({
+                        //             data: {
+                        //                 response: "Verification mail sent successfully",
+                        //                 mailData
+                        //             }
+                        //         });
+                        //     }
+                        // })
+                        // .catch((err) => {
+                        //     return res.status(err.status || 500).json({
+                        //         error: {
+                        //             errorMessage: "Verification mail send unsuccessful",
+                        //             err
+                        //         }
+                        //     });
+                        // })
                 }
-            } else if (data.verified == 0 || data.verified == false) {
+            } else if (data[0].verified == 1 || data[0].verified == true) {
                 return res.status(200).json({
                     data: {
                         response: "Your email is already verified"

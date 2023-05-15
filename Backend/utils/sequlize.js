@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(process.env.DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: "mysql",
-    logging: false, // to print log messages (sql queries) in console
+    logging: true, // to print log messages (sql queries) in console
     port: process.env.DB_PORT,
 });
 

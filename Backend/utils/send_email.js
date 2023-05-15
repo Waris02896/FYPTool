@@ -25,6 +25,7 @@ async function _sendMail(option) {
         mailOptions
     )
     console.log(response);
+    return response;
 }
 
 exports._sendMail = _sendMail

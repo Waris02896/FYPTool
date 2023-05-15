@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
                         }
                     })
                 }
-            } else if (data[0].length == 0) {
+            } else if (data.length == 0) {
                 return res.status(200).json({
                     data: {
                         response: "This email is not registered"

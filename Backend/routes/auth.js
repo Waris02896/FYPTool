@@ -2,7 +2,7 @@ const express = require('express');
 const { forgotPassword, changePassword } = require('../controllers/auth/forgotPassword');
 const { login } = require('../controllers/auth/login');
 const { signup, createBulkUsers } = require('../controllers/auth/registration');
-const { getroles, getUsers } = require('../controllers/auth/users');
+const { getroles, getUsers, getUsersByQuery } = require('../controllers/auth/users');
 const { verifyemail, resendMail } = require('../controllers/auth/verification');
 const { verifyAccessToken } = require('../middlewares/jsonwebtoken');
 const router = express.Router();
@@ -16,6 +16,7 @@ router.post('/resend', resendMail);
 router.post('/forgotPassword', forgotPassword);
 router.get('/changePassword', changePassword);
 router.get('/getUsers', verifyAccessToken, getUsers);
+router.get('/searchUsers', verifyAccessToken, getUsersByQuery);
 // router.post('/createUsers', createBulkUsers);
 
 module.exports = router

@@ -1,4 +1,7 @@
+const { OK, NOT_FOUND } = require('readable-http-status-codes');
 const { db } = require('../../utils/sequlize');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op
 const users = db.Users;
 
 // let role = require('../../data/models/Auth/roles');
@@ -63,15 +66,15 @@ exports.getUsers = async (req, res) => {
         .then((data) => {
             if (data.length > 0) {
                 return res.status(200).json({
-                        data: {
-                            users: data
-                        }
+                    data: {
+                        users: data
+                    }
                 })
             }
         })
-        .catch((err)=>{
+        .catch((err) => {
             return res.status(err.status || 500).json({
-                data:{
+                data: {
                     errorMessage: "Failed to get list of users",
                     err
                 }
@@ -79,20 +82,48 @@ exports.getUsers = async (req, res) => {
         })
 }
 
-// exports.getUsersByQuery = (req, res) => {
-//     let reqData = req.body;
+exports.getUsersByQuery = (req, res) => {
+    let reqData = req.body;
 
-//     let data = users.findAll(
-//         {
-//             where:{
-//                 $or:[
-//                     {
-//                         firstname:{
-//                             [Op.iLike]: `%%`
-//                         }
-//                     }
-//                 ]
-//             }
-//         }
-//     )
-// }
+    let data = users.findAll(
+        {
+            where: {
+                [Op.or]:
+                {
+                    fullname: {
+                        [Op.like]: `%${reqData.fullname}%`
+                    },
+                    email: {
+                        [Op.like]: `%${reqData.email}%`
+                    }
+                }
+            },
+            limit: 5
+        }
+    )
+        .then((data) => {
+            if (data.length > 0) {
+                return res.status(OK).json({
+                    data: {
+                        Users: {
+                            data
+                        }
+                    }
+                })
+            } else if (data.length == 0) {
+                return res.status(OK).json({
+                    data: {
+                        response: "No Users available"
+                    }
+                })
+            }
+        })
+        .catch((err) => {
+            return res.status(NOT_FOUND).json({
+                error: {
+                    errorMessage: "Connection error",
+                    err
+                }
+            })
+        })
+}
