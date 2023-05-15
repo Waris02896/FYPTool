@@ -74,7 +74,7 @@ function CreateProjectModal() {
 
   const handleEditClick = (index) => {
     setEditIndex(index);
-    const { name, description, type, members } = projects[index];
+    const { name, description, type } = projects[index];
     setProjectName(name);
     setProjectDescription(description);
     setProjectType(type);

@@ -8,15 +8,15 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profileType, setProfileType] = useState("");
+  // const [profileType, setProfileType] = useState("");
 
-  const handleSubmit =  async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (profileType === "") {
-      alert("Please select a profile type.");
-      return;
-    }
+    // if (profileType === "") {
+    //   alert("Please select a profile type.");
+    //   return;
+    // }
 
     const userData = {
       user: {
@@ -24,43 +24,65 @@ const SignUp = () => {
         lastname,
         email,
         password,
-        confirmPassword,
-        profileType
+        confirmPassword
+        // profileType
       }
     };
-
-    let response = await fetch(
+    await fetch(
       'http://localhost:3000/fyp/register',
       {
         method: 'POST',
         body: JSON.stringify(userData),
-        headers:{
+        headers: {
           'Content-Type': 'application/json'
         }
-      }
-    )
+      })
+      .then(response => response.json())
       .then((response) => {
-        console.log(`Response: ${response}`);
+        console.log(response);
+        if (response.data.response != null) {
+         
+          alert(response.dataa.response)
+        }
+        else if ( response.error.errorMessage != null) {
+          alert(response.error.errorMessage);
+        }
+        // else 
       })
-      .catch((err) => {
-        console.log(`Error: ${response}`);
-      })
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    users.push(userData);
-    localStorage.setItem("users", JSON.stringify(users));
+      // const data = await response.json();
 
-    if (profileType === "student") {
-      navigate("/student-board");
-    } else {
-      navigate("/supervisor-board");
-    }
+      // if (data.data.response != null) {
+      //   alert(data.data.response);
+
+      // }
+      // .catch((error) => {
+      //   console.log(error);
+      //     alert("Connection Failed.");
+      // })
+
   };
 
   const navigate = useNavigate();
+  // .then((response) => {
+  //   console.log(`Response: ${response}`);
+  // })
+  // .catch((err) => {
+  //   console.log(`Error: ${response}`);
+  // })
+  // const users = JSON.parse(localStorage.getItem("users")) || [];
+  // users.push(userData);
+  // localStorage.setItem("users", JSON.stringify(users));
 
-  const handleSignIn = () => {
-    navigate("/");
-  };
+  // if (profileType === "student") {
+  //   navigate("/student-board");
+  // } else {
+  //   navigate("/supervisor-board");
+  // }
+  // };
+
+  // const handleSignIn = () => {
+  //   navigate("/");
+  // };
 
   return (
     <div className="signup-container">
@@ -125,7 +147,7 @@ const SignUp = () => {
           />
         </label>
         <br />
-        <label>
+        {/* <label>
           Profile Type:
           <br />
           <select
@@ -136,8 +158,8 @@ const SignUp = () => {
             <option value="student">Student</option>
             <option value="supervisor">Supervisor</option>
           </select>
-        </label>
-        <br />
+        </label> */}
+        {/* <br /> */}
         <button type="submit">Sign Up</button>
       </form>
     </div>
