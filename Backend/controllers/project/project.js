@@ -1,38 +1,66 @@
-let project = require('../../data/models/project/project');
-const db = require('../../utils/database_connection');
+const { db } = require("../../utils/sequlize");
+const { OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('readable-http-status-codes');
+const projects = db.Projects;
 
-exports.projectlist = async (req, res) => {
-    db.query('SELECT id, name, duration, sprints, currentSprint, roles, startDate, endDate, icon FROM project ', async (error, result) => {
-        if (error) {
-            return res.status(400).json({
-                data: {
+exports.createProject = async (req, res) => {
+    reqData = req.body;
+    // return res.json({
+    //     reqData
+    // })
+
+    let project_id;
+    let project = await projects.findAll(
+        {
+            limit: 1,
+            order: [
+                [
+                    'createdAt', 'DESC'
+                ]
+            ]
+        }
+    )
+        .then((project) => {
+            if (project.length >= 1) {
+                let proj = project[0].project_id.split('-')
+                project_id = (parseInt(proj[proj.length - 1]) + 1).toString().padStart(8, 0);
+            } else if (project.length == 0) {
+                project_id = (0).toString().padStart(8, 0)
+            }
+        });
+
+    let data = await projects.create(
+        {
+            project_id: `${reqData.name.substring(0, 5)}-${project_id}`,
+            name: reqData.name,
+            user_id: reqData.User.aud,
+            description: reqData.description,
+            type: reqData.type
+        }
+    )
+        .then((data) => {
+            if (data) {
+                return res.status(OK).json({
                     data: {
-
-                    },
-                    error: {
-                        error,
-                        message: "Connection failed please try again"
-                    }
-                }
-            });
-        } else if (result.length > 0) {
-            project = result;
-
-            return res.status(200).json(
-                {
-                    data: {
-                        data: {
-                            project
-
+                        response: "Project Successfully Created",
+                        project: {
+                            data
                         }
                     }
-
+                });
+            } else if (!data) {
+                return res.status(NOT_FOUND).json({
+                    error: {
+                        errorMessage: "Project Create Unsuccessfully"
+                    }
+                })
+            }
+        })
+        .catch((err) => {
+            return res.status(err.status || INTERNAL_SERVER_ERROR).json({
+                error: {
+                    errorMessage: "Project Create Unsuccessfully",
+                    err
                 }
-            );
-        } else if (result.length <= 0) {
-            //return res.status()
-
-        }
-    });
-
+            })
+        })
 }

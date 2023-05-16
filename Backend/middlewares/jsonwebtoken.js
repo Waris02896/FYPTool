@@ -63,7 +63,7 @@ exports.verifyAccessToken = (req, res, next) => {
                 });
             } else if (result) {
                 const _token = JWT.verify(token, process.env.SESSION_SECRET);
-                req.token = _token;
+                req.body.User = _token;
                 next();
             }
         });

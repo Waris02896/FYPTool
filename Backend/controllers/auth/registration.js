@@ -30,7 +30,7 @@ exports.signup = async (req, res) => {
                 } else if (usersRecord.length == 0) {
                     user_id = (0).toString().padStart(8, 0)
                 }
-            })
+            });
 
         // reqData.user.email = reqData.user.firstname.substring(0,3)+user.lastname.substring(0,3) + 
 

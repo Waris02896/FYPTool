@@ -228,3 +228,9 @@ exports.changePassword = async (req, res) => {
         }
     });
 }
+
+// exports.forgotPassword = (req, res) => {
+//     let reqData = req.body;
+
+//     let data = 
+// }

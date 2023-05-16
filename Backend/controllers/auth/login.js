@@ -1,5 +1,6 @@
 const { jwtToken } = require('../../middlewares/jsonwebtoken');
 const { db } = require('../../utils/sequlize');
+const {NOT_FOUND, UNAUTHORIZED} = require('readable-http-status-codes');
 const users = db.Users;
 const bcrypt = require('bcryptjs');
 
@@ -44,23 +45,23 @@ exports.login = async (req, res, next) => {
                                 })
                             })
                     } else if ((data[0].verified == 0) || (data[0].verified == false)) {
-                        return res.status(200).json({
-                            data: {
-                                response: "User is not verified, please verify account first\nor request for resend Verification Email if lost resend mail"
+                        return res.status(UNAUTHORIZED).json({
+                            error: {
+                                errorMessage: "User is not verified, please verify account first\nor request for resend Verification Email if lost resend mail"
                             }
                         })
                     }
                 } else if (!await bcrypt.compare(reqData.password, data[0].password)) {
-                    return res.status(401).json({
+                    return res.status(UNAUTHORIZED).json({
                         error: {
                             errorMessage: "Password is incorrect"
                         }
                     })
                 }
             } else if (data.length == 0) {
-                return res.status(200).json({
-                    data: {
-                        response: "This email is not registered"
+                return res.status(NOT_FOUND).json({
+                    error: {
+                        errorMessage: "This email is not registered"
                     }
                 })
             }
