@@ -2,7 +2,7 @@ const JWT = require('jsonwebtoken');
 const createError = require('http-errors');
 
 exports.jwtToken = (Option) => {
-    console.log(Option)
+
     return new Promise((resolve, reject) => {
 
         const payload = {
@@ -40,14 +40,16 @@ exports.verifyAccessToken = (req, res, next) => {
                 },
                 error: {
                     status: createError.Unauthorized().statusCode,
-                    message: createError.Unauthorized("User not authorized")
+                    // message: createError.Unauthorized("User not authorized")
+                    message: "Dimag Safa khrab"
                 }
             }
         });
     } else if (req.headers['authorization']) {
-        const authHeader = req.headers['authorization'];
-        const baererToken = authHeader.split(' ');
-        const token = baererToken[1];
+        let token = req.headers['authorization'];
+        token = token.slice(1, token.length).slice(0, token.length - 2)
+        console.log(token)
+        // const token = baererToken[1];
         JWT.verify(token, process.env.SESSION_SECRET, (err, result) => {
             if (err) {
                 return res.status(err.status || createError.Unauthorized().statusCode).json({
@@ -57,13 +59,15 @@ exports.verifyAccessToken = (req, res, next) => {
                         error: {
                             err,
                             status: err.status || createError.Unauthorized().statusCode,
-                            message: createError.Unauthorized("User not authorized")
+                            // message: createError.Unauthorized("User not authorized")
+                            message: "Dimag khrab"
                         }
                     }
                 });
             } else if (result) {
                 const _token = JWT.verify(token, process.env.SESSION_SECRET);
-                req.body.User = _token;
+                req.token = _token;
+                console.log("I am working")
                 next();
             }
         });
