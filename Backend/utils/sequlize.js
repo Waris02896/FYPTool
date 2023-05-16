@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(process.env.DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: "mysql",
-    logging: true, // to print log messages (sql queries) in console
+    logging: false, // to print log messages (sql queries) in console
     port: process.env.DB_PORT,
 });
 
@@ -47,7 +47,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// db.TaskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
+db.TaskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
 db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 
 db.sequelize.sync({

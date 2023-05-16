@@ -4,7 +4,7 @@ const createError = require('http-errors');
 exports.jwtToken = (Option) => {
     console.log(Option)
     return new Promise((resolve, reject) => {
-        
+
         const payload = {
             Name: Option.fullName,
             email: Option.email,
@@ -33,7 +33,6 @@ exports.jwtToken = (Option) => {
 
 exports.verifyAccessToken = (req, res, next) => {
     if (!req.headers['authorization']) {
-        console.log("hi")
         return res.status(createError.Unauthorized().statusCode).json({
             data: {
                 data: {
@@ -64,7 +63,6 @@ exports.verifyAccessToken = (req, res, next) => {
                 });
             } else if (result) {
                 const _token = JWT.verify(token, process.env.SESSION_SECRET);
-                // console.log(_token)
                 req.token = _token;
                 next();
             }

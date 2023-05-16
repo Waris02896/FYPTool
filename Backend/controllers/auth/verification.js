@@ -33,10 +33,10 @@ exports.verifyemail = async (req, res) => {
         }
     )
         .then(async (data) => {
-
             if (data.length >= 1) {
+                
                 if (data[0].verified == 0 || data[0].verified == false) {
-                    data = await users.update(
+                    let _data = await users.update(
                         {
                             verified: 1
                         },
@@ -46,8 +46,10 @@ exports.verifyemail = async (req, res) => {
                             }
                         }
                     )
-                        .then((data) => {
-                            if (data.length >= 1) {
+                        .then((_data) => {
+                            
+                            if (_data.length >= 1) {
+
                                 return res.status(200).json({
                                     data: {
                                         response: "Thank you for joining FYP Tool. Your account is verified. Now you can use feature of FYP Tool",
@@ -75,7 +77,6 @@ exports.verifyemail = async (req, res) => {
                 }
             }
             else if (data.length == 0) {
-
                 return res.status(200).json({
                     data: {
                         response: "You are not registered to User FYP Tool with this email. Please Sign up first to FYP Tool"
@@ -106,26 +107,12 @@ exports.resendMail = async (req, res) => {
                     mail.subject = "Verification for FYP Management System";
                     mail.body = `${process.env.BASEURL}/verifyaccount?id=${data.user_id}`;
                     mailData = await _sendMail(mail)
-                    console.log(mailData)
-                        // .then((mailData) => {
-                        //     console.log("hi")
-                        //     if (mailData) {
-                        //         return res.status(mailData.status).json({
-                        //             data: {
-                        //                 response: "Verification mail sent successfully",
-                        //                 mailData
-                        //             }
-                        //         });
-                        //     }
-                        // })
-                        // .catch((err) => {
-                        //     return res.status(err.status || 500).json({
-                        //         error: {
-                        //             errorMessage: "Verification mail send unsuccessful",
-                        //             err
-                        //         }
-                        //     });
-                        // })
+                    return res.status(statusCode.OK_200).json({
+                        data:{
+                            response:"Verification mail sent successful",
+                            User: data
+                        }
+                    })
                 }
             } else if (data[0].verified == 1 || data[0].verified == true) {
                 return res.status(200).json({
@@ -136,70 +123,3 @@ exports.resendMail = async (req, res) => {
             }
         })
 }
-
-// exports.resendMail = async (req, res) => {
-//     let _email = req.body;
-
-//     try {
-//         const _result = await email.validateAsync(_email)
-//     } catch (error) {
-//         console.log(error)
-//         return res.status(error.status || 500).json({
-//             data: {
-//                 data: {
-
-//                 },
-//                 error: {
-//                     message: "Email format is not valid",
-//                 }
-//             }
-//         })
-//     }
-
-//     db.query('SELECT * FROM users WHERE email = ?', [_email.email], async (error, result) => {
-//         if (error) {
-//             return res.status(error.status || 500).json({
-//                 data: {
-//                     data: {
-
-//                     }
-//                 },
-//                 error: {
-//                     error
-//                 }
-//             })
-//         } else if (result.length > 0) {
-//             let user = result[0];
-//             user.verified = Boolean(user.verified);
-//             mail.to = user.email;
-//             mail.subject = "Verification for FYP Management System";
-//             mail.body = `${process.env.BASEURL}/verifyaccount?id=${user.user_id}`;
-//             _sendMail(mail);
-//             return res.status(200).json({
-//                 data: {
-//                     data: {
-//                         user: {
-//                             user_id: user.user_id,
-//                             firstname: user.firstname,
-//                             lastname: user.lastname,
-//                             email: user.email,
-//                             phone: user.phone,
-//                             verified: user.verified,
-//                             pic: user.pic
-//                         },
-//                         message: "Verification mail sent to your email address"
-//                     }
-//                 }
-//             })
-//         } else if (result.length <= 0) {
-//             return res.status(200).json({
-//                 data: {
-//                     data: {
-
-//                     },
-//                     message: `No user with ${_email.email}`
-//                 }
-//             })
-//         }
-//     })
-// }
