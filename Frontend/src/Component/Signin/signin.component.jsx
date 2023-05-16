@@ -143,20 +143,40 @@ const SignIn = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body:JSON.stringify(userData.user)
+        body: JSON.stringify(userData.user)
       })
       .then(response => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.error && data.error.errorMessage) {
-          alert(data.error.errorMessage)
-        }
-        else if (data.data && data.data.response) {
-          // alert(data.data.response);
+      .then((response) => {
+        if (response.data.response != null) {
+          alert(response.data.response)
+          // navigate("/student-board");
+
+          // localStorage.setItem('token', JSON.stringify(response.data.User.token));
+          
+          let token = response.data.User.token
+          
+          // token = token.slice(1, token.length);
+          // token = token.slice(0, token.length - 1);
+          localStorage.setItem('token', token);
+          console.log(localStorage.getItem('token'))
           navigate("/student-board");
         }
+        else if (response.error && response.error.errorMessage) {
+          alert(response.error.errorMessage);
+        }
+        // if (response.error && response.error.errorMessage) {
+        //   alert(response.error.errorMessage)
+        // }
+        // else if (response.data && response.data.response) {
+        //   // alert(data.data.response);
+        //   navigate("/student-board");
+        // }
         // else 
       })
+      // .then((data) => {
+      //   localStorage.setItem('token', data);
+      //   console.log(localStorage);
+      // })
       // const data = await response.json();
 
       // if (data.data.response != null) {
@@ -164,13 +184,12 @@ const SignIn = () => {
 
       // }
       .catch((error) => {
-        console.log(error);
-        alert("Connection Failed.");
+        alert(error.errorMessage);
       })
 
   };
 
-  
+
   // .then((response) => {
   //   console.log(`Response: ${response}`);
   // })
@@ -220,7 +239,7 @@ const SignIn = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
-          
+
           <br />
           <button type="submit" className="sign-in-button">Sign In</button>
         </form>
