@@ -11,7 +11,23 @@ import {
 import Card_Edits from "../../Card_Edits/Card_Edits";
 import Modal from "../../Modal/Modal";
 import "./CardInfo.css";
+// import axios from 'axios';
 
+async function fetchData() {
+  try{
+    const response = await fetch("http://localhost:3000/fyp/taskCategories",{
+      method: "GET",
+      headers: {
+        "authorization": `"${localStorage.getItem("token")}"`,
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+  }
+  catch (error) {
+    console.error(error);
+  }
+}
 function CardInfo(props) {
   const colors = [
     "#a8193d",
@@ -22,10 +38,28 @@ function CardInfo(props) {
     "#cf61a1",
     "#240959",
   ];
+  const [taskCategories, setTaskCategories] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  // await fetch('http://localhost:3000/fyp/taskCategories',
+  // {
+  //   method: 'GET',
+  //   headers: {
+  //     "Authorization" : `Barear `+localStorage.getItem('token'),
+  //   }
+  // })
+  // .then(response => response.json())
+  // .then(response => console.log(response))
+  // .catch(err => console.error(err));
+  // }
+
   const [selectedColor, setSelectedColor] = useState();
   const [values, setValues] = useState({
     ...props.card,
   });
+  
   const updateTitle = (value) => {
     setValues({ ...values, title: value });
   };
@@ -94,9 +128,9 @@ function CardInfo(props) {
   };
   const [filteredTasks, setFilteredTasks] = useState([]);
   const categories = [
-    { id: 1, name: "Task" },
-    { id: 2, name: "Bug" },
-    { id: 3, name: "Category 3" },
+    { id: 25, name: "Task" },
+    { id: 26, name: "Bug" },
+    { id: 27, name: "Sub Task" },
     // Add more categories as needed
   ];
   const handleCategoryChange = (event) => {
@@ -114,6 +148,7 @@ function CardInfo(props) {
   useEffect(() => {
     if (props.updateCard) props.updateCard(props.boardId, values.id, values);
   }, [values]);
+
   return (
     <Modal onClose={props.onClose}>
       <div className="cardinfo">
@@ -227,7 +262,9 @@ function CardInfo(props) {
             <CheckSquare />
             <p>Issue Type</p>
           </div>
-          <div className="cardinfo_box_progress-bar">
+
+          {/* //tracking line */}
+          {/* <div className="cardinfo_box_progress-bar">
             <div
               className="cardinfo_box_progress"
               style={{
@@ -235,7 +272,7 @@ function CardInfo(props) {
                 backgroundColor: calculatePercent() === 100 ? "limegreen" : "",
               }}
             />
-          </div>
+          </div> */}
           <div className="cardinfo_box_task_list">
             {values.tasks && values.tasks.map((item) => (
               <div key={item.id} className="cardinfo_box_task_checkbox">
@@ -252,9 +289,9 @@ function CardInfo(props) {
           <div>
             <select className="task_categories_dropdown" onChange={handleCategoryChange}>
               <option value="">Select a category</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
+              {taskCategories.map((categories) => (
+                <option key={categories.id} value={categories.id}>
+                  {categories.name}
                 </option>
               ))}
             </select>

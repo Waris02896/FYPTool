@@ -39,7 +39,6 @@ const SignUp = () => {
       })
       .then(response => response.json())
       .then((response) => {
-        console.log(response);
         if (response.data.response != null) {
          
           alert(response.data.response)
