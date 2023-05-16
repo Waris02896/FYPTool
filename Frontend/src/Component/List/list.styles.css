@@ -1,0 +1,21 @@
+.list-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f5f5f5;
+  }
+  
+  .name {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .priority {
+    flex: 1;
+  }
+  
+  .delete-button {
+    margin-left: 10px;
+  }
+  

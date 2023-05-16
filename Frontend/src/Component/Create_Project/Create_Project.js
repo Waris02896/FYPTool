@@ -80,7 +80,7 @@ function CreateProjectModal() {
     setProjectType(type);
     setShowModal(true);
   };
-
+  
   return (
     <div>
       <h1>Projects</h1>
@@ -95,6 +95,7 @@ function CreateProjectModal() {
               <Link to={`/student-board`}>View</Link>
               <button name ="edit" onClick={() => handleEditClick(index)}>Edit</button>
               <button name="addmember">Add Members</button>
+              <Link to={'/processcard'}>Add Process Card</Link>
               <button name = "delete" onClick={() => deleteProject(index)}>Delete</button>
             </div>
           </li>
@@ -108,10 +109,7 @@ function CreateProjectModal() {
       <div>Project Description:</div>
       <textarea value={projectDescription} onChange={handleProjectDescriptionChange} />
       <div>Project Type:</div>
-      <select value={projectType} onChange={handleProjectTypeChange}>
-        <option value="fyp1">FYP 1</option>
-        <option value="fyp2">FYP 2</option>
-      </select>
+      <input value={projectType} onChange={handleProjectTypeChange}/>
       <div className="modal-buttons">
         <button onClick={addProject}>Add</button>
         <button onClick={closeModal}>Cancel</button>

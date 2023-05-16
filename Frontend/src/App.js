@@ -16,7 +16,7 @@ import About from './Pages/About project/aboutpage.component';
 import Sidebar from './Component/Side Bar/sidebar.component';
 import Createproject from './Pages/Create Project/createprojectpage.component';
 import Boards_Display from './Pages/Boards_Display/Boards_Display';
-import ForgotPassword from './Component/Forgot Password/forgotpass.component';
+import ForgotPassword from './Pages/Forgot_password/forgotpasswordpage';
 import ProfileForm from './Pages/ProfilesPage/profilespage';
 import ProfileView from './Pages/ProfilesPage/profileviewpage';
 import SupervisorBoards_Display from './Pages/Supervisor_Board Page/Supervisorpage';
@@ -30,6 +30,7 @@ class App extends Component {
           <Routes>
             <Route exact path='/' element={<SignIn />}></Route>
             <Route exact path='/signup' element={< Signup />}></Route>
+            <Route exact path='/fp' element={<ForgotPassword />}></Route>
           </Routes>
           <Sidebar>
             <Routes>
@@ -39,7 +40,7 @@ class App extends Component {
               <Route exact path='/about' element={< About />}></Route>
               <Route exact path='/createproject' element={<Createproject />}></Route>
               <Route exact path='/board' element={<Boards_Display />}></Route>
-              <Route exact path='/fp' element={<ForgotPassword />}></Route>
+              
               <Route exact path='/pf' element={<ProfileForm />}></Route>
               <Route exact path='/profile' element={<ProfileView />}></Route>
               <Route exact path='/supervisor-board' element={<SupervisorBoards_Display />}></Route>

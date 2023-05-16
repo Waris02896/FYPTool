@@ -103,10 +103,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./signinstyles.css";
+import ForgotPassword from "../Forgot Password/forgotpass.component";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   // const [profileType, setProfileType] = useState("");
   const handleSignUp = () => {
     navigate("/signup");
@@ -138,17 +140,20 @@ const SignIn = () => {
         method: 'POST',
         body: JSON.stringify(userData),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body:JSON.stringify(userData.user)
       })
       .then(response => response.json())
-      .then((response) => {
-        console.log(response);
-        if (response.error.errorMessage != null) {
-          alert(response.error.errorMessage)
+      .then((data) => {
+        console.log(data);
+        if (data.error && data.error.errorMessage) {
+          alert(data.error.errorMessage)
         }
-        if (response.data.response != null) {
-          alert(response.data.response);
+        else if (data.data && data.data.response) {
+          // alert(data.data.response);
+          navigate("/student-board");
         }
         // else 
       })
@@ -165,7 +170,7 @@ const SignIn = () => {
 
   };
 
-  const navigate = useNavigate();
+  
   // .then((response) => {
   //   console.log(`Response: ${response}`);
   // })
@@ -215,6 +220,7 @@ const SignIn = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>
+          
           <br />
           <button type="submit" className="sign-in-button">Sign In</button>
         </form>

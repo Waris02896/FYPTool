@@ -42,7 +42,7 @@ const SignUp = () => {
         console.log(response);
         if (response.data.response != null) {
          
-          alert(response.dataa.response)
+          alert(response.data.response)
         }
         else if ( response.error.errorMessage != null) {
           alert(response.error.errorMessage);
@@ -55,10 +55,10 @@ const SignUp = () => {
       //   alert(data.data.response);
 
       // }
-      // .catch((error) => {
-      //   console.log(error);
-      //     alert("Connection Failed.");
-      // })
+      .catch((error) => {
+        console.log(error);
+          alert("Connection Failed.");
+      })
 
   };
 

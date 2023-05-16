@@ -8,17 +8,30 @@ function ForgotPassword() {
 
     const handleForgotPassword = async (e) => {
         e.preventDefault();
-        try {
-            // Send a request to the server with the user's email address
-            await axios.post('/api/forgot-password', { email });
-            // If the request is successful, update the component's state
+        axios.post('http://localhost:3000/fyp/forgotPassword', { email })
+        .then(() => {
             setSuccess(true);
             setError(null);
-        } catch (err) {
-            // If there is an error, update the component's state
-            setError(err.response.data.error);
-        }
-    }
+        }).catch((err) => {
+            if (err.response) {
+                setError(err.response.data.error);
+            } else if (err.request) {
+                setError('No response');
+            } else {
+                setError('An error accurred while sending the request');
+            }
+        });
+        // try {
+        //     // Send a request to the server with the user's email address
+        //     await axios.post('http://localhost:3000/fyp/forgotPassword', { email });
+        //     // If the request is successful, update the component's state
+        //     setSuccess(true);
+        //     setError(null);
+        // } catch (err) {
+        //     // If there is an error, update the component's state
+        //     setError(err.response.data.error);
+        // }
+    };
 
     return (
         <div>
