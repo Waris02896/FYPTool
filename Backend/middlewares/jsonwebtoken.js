@@ -40,7 +40,7 @@ exports.verifyAccessToken = (req, res, next) => {
         });
     } else if (req.headers['authorization']) {
         let token = req.headers['authorization'];
-        if (token.slice(0, 1) == "\n") {
+        if (token.slice(0, 1) == "\"") {
             token = token.slice(1, token.length).slice(0, token.length - 2)
         }
         // const token = baererToken[1];
