@@ -21,6 +21,7 @@ import ProfileForm from './Pages/ProfilesPage/profilespage';
 import ProfileView from './Pages/ProfilesPage/profileviewpage';
 import SupervisorBoards_Display from './Pages/Supervisor_Board Page/Supervisorpage';
 import StudentBoards_Display from './Pages/Student_Board Page/Studentpage';
+import AddMembers from './Component/Create_Project/addmembermodal';
 class App extends Component {
   render() {
     return (
@@ -45,6 +46,7 @@ class App extends Component {
               <Route exact path='/profile' element={<ProfileView />}></Route>
               <Route exact path='/supervisor-board' element={<SupervisorBoards_Display />}></Route>
               <Route exact path='/student-board' element={<StudentBoards_Display />}></Route>
+              <Route exact path='/addmember' element={<AddMembers />}></Route>
             </Routes>
           </Sidebar>
         </div>

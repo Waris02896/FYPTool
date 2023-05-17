@@ -22,6 +22,7 @@ async function fetchData() {
       },
     });
     const data = await response.json();
+    // setTaskCategories(data);
     console.log(data);
   }
   catch (error) {
@@ -29,6 +30,15 @@ async function fetchData() {
   }
 }
 function CardInfo(props) {
+  const [taskCategories, setTaskCategories] = useState([]);
+  const [selectedColor, setSelectedColor] = useState();
+  const [values, setValues] = useState({
+    ...props.card,
+  });
+  useEffect(() => {
+    fetchData();
+    //setTaskCategories();
+  }, []);
   const colors = [
     "#a8193d",
     "#4fcc25",
@@ -38,11 +48,8 @@ function CardInfo(props) {
     "#cf61a1",
     "#240959",
   ];
-  const [taskCategories, setTaskCategories] = useState([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  
+  
   // await fetch('http://localhost:3000/fyp/taskCategories',
   // {
   //   method: 'GET',
@@ -55,10 +62,7 @@ function CardInfo(props) {
   // .catch(err => console.error(err));
   // }
 
-  const [selectedColor, setSelectedColor] = useState();
-  const [values, setValues] = useState({
-    ...props.card,
-  });
+  
   
   const updateTitle = (value) => {
     setValues({ ...values, title: value });
@@ -127,6 +131,7 @@ function CardInfo(props) {
     });
   };
   const [filteredTasks, setFilteredTasks] = useState([]);
+  
   const categories = [
     { id: 25, name: "Task" },
     { id: 26, name: "Bug" },
@@ -290,7 +295,8 @@ function CardInfo(props) {
             <select className="task_categories_dropdown" onChange={handleCategoryChange}>
               <option value="">Select a category</option>
               {taskCategories.map((category) => (
-                <option key={category.id} value={category.id}>
+                <option value={category.id}>
+                  console.log("hi");
                   {category.name}
                 </option>
               ))}

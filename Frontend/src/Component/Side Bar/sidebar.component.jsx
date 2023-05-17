@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {
     FaTh,
-    FaBars,
-    FaUserAlt,
-    FaCommentAlt,
-    FaThList
+    FaBars
 }from "react-icons/fa";
 import {MdDashboardCustomize} from "react-icons/md";
 import { NavLink } from 'react-router-dom';
@@ -20,28 +17,8 @@ const Sidebar = ({children}) => {
             icon:<FaTh/>
         },
         {
-            path:"/about",
-            name:"About",
-            icon:<FaUserAlt/>
-        },
-        {
-            path:"/comments",
-            name:"Comment",
-            icon:<FaCommentAlt/>
-        },
-        {
-            path:"/processcard",
-            name:"Process Card",
-            icon:<FaThList/>
-        },
-        {
             path:"/board",
             name:"DashBoard",
-            icon:<MdDashboardCustomize/>
-        },
-        {
-            path:"/pf",
-            name:"Profile Form",
             icon:<MdDashboardCustomize/>
         },
         {

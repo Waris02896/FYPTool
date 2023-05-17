@@ -5,16 +5,14 @@ import "./Navbar.css";
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-brand">
-        NUTRAKIYA
-      </Link>
+      <h2>NUTRAKIYA</h2>
       <div className="navbar-menu">
         <div className="navbar-menu-item">
           <Link to="/">Home</Link>
         </div>
-        <div className="navbar-menu-item">
+        {/* <div className="navbar-menu-item">
           <Link to="/about">About</Link>
-        </div>
+        </div> */}
       </div>
     </nav>
   );
