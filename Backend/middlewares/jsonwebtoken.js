@@ -22,7 +22,6 @@ exports.jwtToken = (Option) => {
         JWT.sign(payload, secret, options, (error, token) => {
             if (error) {
                 throw reject(error);
-
             } else if (token) {
                 resolve(token);
             }
@@ -34,28 +33,24 @@ exports.jwtToken = (Option) => {
 exports.verifyAccessToken = (req, res, next) => {
     if (!req.headers['authorization']) {
         return res.status(createError.Unauthorized().statusCode).json({
-            data: {
-                error: {
-                    status: createError.Unauthorized().statusCode,
-                    errorMessage: createError.Unauthorized("User not authorized")
-                }
+            error: {
+                status: createError.Unauthorized().statusCode,
+                errorMessage: createError.Unauthorized("User not authorized")
             }
         });
     } else if (req.headers['authorization']) {
         let token = req.headers['authorization'];
-        if(token.slice(0,1) == "\n"){
+        if (token.slice(0, 1) == "\n") {
             token = token.slice(1, token.length).slice(0, token.length - 2)
         }
         // const token = baererToken[1];
         JWT.verify(token, process.env.SESSION_SECRET, (err, result) => {
             if (err) {
                 return res.status(err.status || createError.Unauthorized().statusCode).json({
-                    data: {
-                        error: {
-                            err,
-                            status: err.status || createError.Unauthorized().statusCode,
-                            errorMessage: createError.Unauthorized("User not authorized")
-                        }
+                    error: {
+                        err,
+                        status: err.status || createError.Unauthorized().statusCode,
+                        errorMessage: createError.Unauthorized("User not authorized")
                     }
                 });
             } else if (result) {
