@@ -55,7 +55,7 @@ function CreateProjectModal() {
 
       // }
       .catch((error) => {
-        console.log(error.errorMessage);
+        console.log(error);
         alert("not created.");
       })
 
