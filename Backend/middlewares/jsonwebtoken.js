@@ -35,12 +35,9 @@ exports.verifyAccessToken = (req, res, next) => {
     if (!req.headers['authorization']) {
         return res.status(createError.Unauthorized().statusCode).json({
             data: {
-                data: {
-
-                },
                 error: {
                     status: createError.Unauthorized().statusCode,
-                    message: createError.Unauthorized("User not authorized")
+                    errorMessage: createError.Unauthorized("User not authorized")
                 }
             }
         });
@@ -54,12 +51,10 @@ exports.verifyAccessToken = (req, res, next) => {
             if (err) {
                 return res.status(err.status || createError.Unauthorized().statusCode).json({
                     data: {
-                        data: {
-                        },
                         error: {
                             err,
                             status: err.status || createError.Unauthorized().statusCode,
-                            message: createError.Unauthorized("User not authorized")
+                            errorMessage: createError.Unauthorized("User not authorized")
                         }
                     }
                 });
