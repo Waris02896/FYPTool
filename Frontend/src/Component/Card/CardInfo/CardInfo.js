@@ -289,9 +289,9 @@ function CardInfo(props) {
           <div>
             <select className="task_categories_dropdown" onChange={handleCategoryChange}>
               <option value="">Select a category</option>
-              {taskCategories.map((categories) => (
-                <option key={categories.id} value={categories.id}>
-                  {categories.name}
+              {taskCategories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
                 </option>
               ))}
             </select>
