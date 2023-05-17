@@ -14,7 +14,7 @@ exports.createProject = async (req, res) => {
             limit: 1,
             order: [
                 [
-                    'createdAt', 'DESC'
+                    'project_id', 'DESC'
                 ]
             ]
         }
@@ -60,6 +60,46 @@ exports.createProject = async (req, res) => {
                 error: {
                     errorMessage: "Project Create Unsuccessfully",
                     err
+                }
+            })
+        })
+}
+
+exports.projectList = async (req, res) => {
+    let reqData = req.body;
+    // return res.json({
+    //     reqData
+    // })
+
+    let data = await projects.findAll(
+        {
+            where: {
+                user_id: reqData.User.aud
+            }
+        }
+    )
+        .then((data) => {
+            if (data.length > 0) {
+                return res.status(OK).json({
+                    data: {
+                        projects: {
+                            data
+                        }
+                    }
+                })
+            } else if (data.length == 0) {
+                return res.status(OK).json({
+                    data: {
+                        response: "No project available for this user"
+                    }
+                })
+            }
+        })
+        .catch((err) => {
+            return res.status(INTERNAL_SERVER_ERROR).json({
+                error: {
+                    response: "Connection Failed",
+                    errorMessage
                 }
             })
         })

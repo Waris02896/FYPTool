@@ -50,6 +50,7 @@ db.sequelize = sequelize;
 db.TaskCategories = require('../data/models/task/taskCategories')(sequelize, DataTypes);
 db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 db.Projects = require('../data/models/project/project')(sequelize, DataTypes);
+db.ProcessCard = require('../data/models/project/process')(sequelize, DataTypes);
 
 db.sequelize.sync({
     force: false

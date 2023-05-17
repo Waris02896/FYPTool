@@ -40,15 +40,15 @@ exports.verifyAccessToken = (req, res, next) => {
                 },
                 error: {
                     status: createError.Unauthorized().statusCode,
-                    // message: createError.Unauthorized("User not authorized")
-                    message: "Dimag Safa khrab"
+                    message: createError.Unauthorized("User not authorized")
                 }
             }
         });
     } else if (req.headers['authorization']) {
         let token = req.headers['authorization'];
-        token = token.slice(1, token.length).slice(0, token.length - 2)
-        console.log(token)
+        if(token.slice(0,1) == "\n"){
+            token = token.slice(1, token.length).slice(0, token.length - 2)
+        }
         // const token = baererToken[1];
         JWT.verify(token, process.env.SESSION_SECRET, (err, result) => {
             if (err) {
@@ -59,15 +59,13 @@ exports.verifyAccessToken = (req, res, next) => {
                         error: {
                             err,
                             status: err.status || createError.Unauthorized().statusCode,
-                            // message: createError.Unauthorized("User not authorized")
-                            message: "Dimag khrab"
+                            message: createError.Unauthorized("User not authorized")
                         }
                     }
                 });
             } else if (result) {
                 const _token = JWT.verify(token, process.env.SESSION_SECRET);
-                req.token = _token;
-                console.log("I am working")
+                req.body.User = _token;
                 next();
             }
         });
