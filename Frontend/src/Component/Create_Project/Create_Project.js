@@ -39,6 +39,7 @@ function CreateProjectModal() {
       })
       .then(response => response.json())
       .then((response) => {
+        console.log("Hi message")
         if (response.data.response != null) {
 
           alert(response.data.response)
