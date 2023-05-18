@@ -29,7 +29,7 @@ exports.addUser = async (req, res) => {
                     let team = await team.create(
                         {
                             project_id: reqData.project_id,
-                            user_id: reqData.User.user_id,
+                            user_id: reqData.user_id,
                             rights: reqData.rights
                         }
                     )
