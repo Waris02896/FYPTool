@@ -29,7 +29,6 @@ exports.addUser = async (req, res) => {
             )
                 .then(async (teamData) => {
                     if (teamData) {
-                        console.log(reqData.project_id)
                         let teams = await team.create(
                             {
                                 project_id: reqData.project_id,
@@ -41,7 +40,6 @@ exports.addUser = async (req, res) => {
                                 // return res.json({
                                 //     team
                                 // })
-                                console.log("HI")
                                 return res.status(OK).json({
                                     data: {
                                         response: "Member added to the project",
@@ -64,7 +62,7 @@ exports.addUser = async (req, res) => {
                     
                     return res.status(INTERNAL_SERVER_ERROR).json({
                         error: {
-                            errorMessage: "Member not added to the project",
+                            errorMessage: "You are not part of Project",
                             err
                         }
                     })

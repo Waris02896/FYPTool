@@ -1,7 +1,7 @@
 module.exports = (sequlize, DataTypes) => {
     const ProcessCard = sequlize.define("processCard", {
         process_id: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.INTEGER(50),
             primaryKey: true,
             allowNull: false,
             validate: {
