@@ -13,10 +13,10 @@ module.exports = (sequlize, DataTypes) => {
         user_id: {
             type: DataTypes.STRING(50),
             allowNull: false,
-            references: {
-                model: 'users',
-                key: 'user_id'
-            },
+            // references: {
+            //     model: 'users',
+            //     key: 'user_id'
+            // },
             validate:{
                 notNull: {
                     msg: "User Id cannot be null"

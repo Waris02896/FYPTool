@@ -1,6 +1,7 @@
 const { db } = require("../../utils/sequlize");
-const { OK, NOT_FOUND, INTERNAL_SERVER_ERROR } = require('readable-http-status-codes');
+const { OK, NOT_FOUND, INTERNAL_SERVER_ERROR, UNAUTHORIZED } = require('readable-http-status-codes');
 const projects = db.Projects;
+const team = db.Team;
 
 exports.createProject = async (req, res) => {
     reqData = req.body;
@@ -30,23 +31,45 @@ exports.createProject = async (req, res) => {
 
     let data = await projects.create(
         {
-            project_id: `${reqData.name.substring(0, 5)}-${project_id}`,
+            project_id: `${reqData.name.substring(0, 3)}-${project_id}`,
             name: reqData.name,
             user_id: reqData.User.aud,
             description: reqData.description,
             type: reqData.type
         }
     )
-        .then((data) => {
+        .then(async (data) => {
             if (data) {
-                return res.status(OK).json({
-                    data: {
-                        response: "Project Successfully Created",
-                        project: {
-                            data
-                        }
+                console.log("Working")
+                let teamData = await team.create(
+                    {
+                        project_id: `${reqData.name.substring(0, 5)}-${project_id}`,
+                        user_id: reqData.User.aud,
+                        rights: "Project Manager"
                     }
-                });
+                )
+                .then((teamData)=>{
+                    if(teamData){
+                        return res.status(OK).json({
+                            data: {
+                                response: "Project Successfully Created",
+                                project: {
+                                    data,
+                                    teamData
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch((err)=>{
+                    return res.status(err.status || INTERNAL_SERVER_ERROR).json({
+                        error:{
+                            errorMessage: "Connection Error",
+                            err
+                        }
+                    })
+                })
+                
             } else if (!data) {
                 return res.status(NOT_FOUND).json({
                     error: {

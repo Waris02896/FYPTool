@@ -5,8 +5,6 @@ const processCard = db.ProcessCard;
 exports.processCard = async (req,res)=>{
     let reqData = req.body;
 
-    // let data
-
     let data = await processCard.create(
         {
             process_id: reqData.process_id,

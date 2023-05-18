@@ -1,31 +1,102 @@
-module.exports = (sequlize, DataTypes) => {
-    const team = sequlize.define("processCard", {
-        project_id: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            references: {
-                model: 'projects',
-                key: 'project_id'
-            },
-            validate:{
-                notNull: {
-                    msg: "Project Id cannot be null"
-                }
-            }
-        },
-        User_id: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-            references: {
-                model: 'projects',
-                key: 'project_id'
-            },
-            validate:{
-                notNull: {
-                    msg: "Project Id cannot be null"
-                }
+const { UNAUTHORIZED, INTERNAL_SERVER_ERROR, OK } = require("readable-http-status-codes");
+const { db } = require("../../utils/sequlize");
+const team = db.Team;
+const project = db.Projects;
+
+exports.addUser = async (req, res) => {
+    let reqData = req.body;
+
+    let projectData = await project.findOne(
+        {
+            where: {
+                project_id: reqData.project_id,
+                user_id: reqData.User.aud
             }
         }
-    });
-    return team;
+    )
+        .then(async (projectData) => {
+            let teamData = await team.findOne(
+                {
+                    where: {
+                        project_id: reqData.project_id,
+                        user_id: reqData.User.aud,
+                        rights: "Project Manager"
+                    }
+                }
+            )
+            .then(async (teamData)=>{
+                if(teamData.length > 0){
+                    let team = await team.create(
+                        {
+                            project_id: reqData.project_id,
+                            user_id: reqData.User.user_id,
+                            rights: reqData.rights
+                        }
+                    )
+                    .then((team)=>{
+                        if(team.length > 0){
+                            return res.status(OK).json({
+                                data:{
+                                    response:"Member added to the project",
+                                    data
+                                }
+                            });
+                        }else if(team.length == 0){
+                            return res.status(UNAUTHORIZED).json({
+                                error:{
+                                    errorMessage:"Member not added to the project"
+                                }
+                            })
+                        }
+                    })
+                }else if(teamData.length == 0){
+                    return res.status.json({
+                        error:{
+                            errorMessage: "You are not part of project team"
+                        }
+                    });
+                }
+            })
+            .catch((err)=>{
+                return res.status(INTERNAL_SERVER_ERROR).json({
+                    error:{
+                        errorMessage:"Member not added to the project",
+                        err
+                    }
+                })
+            })
+        })
+        .catch((err) => {
+            return res.status(INTERNAL_SERVER_ERROR).json({
+                error: {
+                    errorMessage: "Member not added to the project",
+                    err
+                }
+            });
+        })
 }
+
+// if(projectData.length > 0){
+//     let data = await team.create(
+//         {
+//             project_id: reqData.project_id,
+//             user_id: reqData.User.user_id,
+//             rights: reqData.rights
+//         }
+//     )
+//     .then((data)=>{
+//         if(data.length > 0){
+//             return res.status(OK).json({
+//                 data:{
+//                     response:"User added to the project"
+//                 }
+//             })
+//         }
+//     })
+// }else if(projectData.length == 0){
+//     return res.status(UNAUTHORIZED).json({
+//         error:{
+//             errorMessage:"User does not have right to add member in project"
+//         }
+//     })
+// }

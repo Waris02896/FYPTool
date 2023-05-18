@@ -3,7 +3,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(process.env.DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: "mysql",
-    logging: false, // to print log messages (sql queries) in console
+    logging: true, // to print log messages (sql queries) in console
     port: process.env.DB_PORT,
 });
 
@@ -51,6 +51,25 @@ db.TaskCategories = require('../data/models/task/taskCategories')(sequelize, Dat
 db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 db.Projects = require('../data/models/project/project')(sequelize, DataTypes);
 db.ProcessCard = require('../data/models/project/process')(sequelize, DataTypes);
+db.Team = require('../data/models/project/team')(sequelize, DataTypes);
+
+//Relations
+// db.Users.belongsToMany(
+//     db.Projects,
+//     {
+//         through: "teams",
+//         unique: false,
+//         foreignKey:"user_id"
+//     }
+// );
+// db.Projects.belongsToMany(
+//     db.Users,
+//     {
+//         through: "teams",
+//         unique: false,
+//         foreignKey: "project_id"
+//     }
+// );
 
 db.sequelize.sync({
     force: false
