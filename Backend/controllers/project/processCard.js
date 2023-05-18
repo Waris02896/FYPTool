@@ -1,4 +1,4 @@
-const { OK, INTERNAL_SERVER_ERROR } = require("readable-http-status-codes");
+const { OK, INTERNAL_SERVER_ERROR, UNAUTHORIZED } = require("readable-http-status-codes");
 const { db } = require("../../utils/sequlize");
 
 const processCard = db.ProcessCard;
@@ -11,7 +11,7 @@ exports.createProcessCard = async (req,res)=>{
         {
             where:{
                 project_id: reqData.project_id,
-                user_id: reqData.User.user_id,
+                user_id: reqData.User.aud,
             }
         }
     )
@@ -24,7 +24,8 @@ exports.createProcessCard = async (req,res)=>{
             }
         )
         .then((data)=>{
-            if(data.length >0){
+            console.log("Hi")
+            if(data){
                 return res.status(OK).json({
                     data:{
                         response:"Process Created",
@@ -34,18 +35,18 @@ exports.createProcessCard = async (req,res)=>{
             }
         })
         .catch((err)=>{
-            return res.status(err.status || INTERNAL_SERVER_ERROR).json({
+            return res.status(err.statusCode || INTERNAL_SERVER_ERROR).json({
                 error:{
-                    errorMessage:"Process card cannot be added",
+                    errorMessage:err.errors[0].message,
                     err
                 }
             })
         })
     })
     .catch((err)=>{
-        return res.status(err.status || INTERNAL_SERVER_ERROR).json({
+        return res.status(err.status || UNAUTHORIZED).json({
             error:{
-                errorMessage:"Process Card cannot be added",
+                errorMessage:"You are not part of this project",
                 err
             }
         })

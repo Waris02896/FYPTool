@@ -4,6 +4,7 @@ module.exports = (sequlize, DataTypes) => {
             type: DataTypes.INTEGER(50),
             primaryKey: true,
             allowNull: false,
+            autoIncrement: true,
             validate: {
                 notNull: {
                     msg: "Process Card Id cannot be null"
