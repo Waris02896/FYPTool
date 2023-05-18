@@ -96,6 +96,11 @@ function CreateProjectModal() {
   const handleAddMember = (userEmail, userRole) => {
     const members = { email: userEmail, role: userRole };
     setProjectMembers([...projectMembers, members]);
+    if (typeof window !== 'undefined') {
+      const storedProjectMembers = JSON.parse(localStorage.getItem('projectMembers')) || [];
+      const updatedProjectMembers = [...storedProjectMembers, members];
+      localStorage.setItem('projectMembers', JSON.stringify(updatedProjectMembers));
+    }
   };
 
   const deleteMember = (index) => {
