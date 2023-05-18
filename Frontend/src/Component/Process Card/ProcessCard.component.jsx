@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './ProcessCard.css';
 import List from '../List/List.jsx';
 import CustomButton from '../Button/button.component';
+import { useLocation } from 'react-router-dom';
 //import { useEffect } from 'react';
 
 class ProcessCard extends Component {
@@ -10,6 +11,9 @@ class ProcessCard extends Component {
         processName: "",
         processPriority: ""
     };
+    componentDidMount() {
+        this.fetchData();
+    }
     handleProcessNameChange = e => {
         this.setState({ processName: e.target.value })
     }
