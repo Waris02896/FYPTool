@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import "./Create_Project.css";
+import AddMembers from './addmembermodal';
 
 function CreateProjectModal() {
   const [projects, setProjects] = useState([]);
@@ -10,9 +11,35 @@ function CreateProjectModal() {
   const [projectType, setProjectType] = useState('');
   // const [editIndex, setEditIndex] = useState(null); // added editIndex state
   const [projectMembers, setProjectMembers] = useState([]);
+  //const [selectedUser, setSelectedUser] = useState('');
+  //const [selectedRole, setSelectedRole] = useState('');
+
+  const fetchProjects = async () => {
+   fetch('http://localhost:3000/fyp/projectList', {
+        headers: {
+          'Content-Type': 'application/json',
+          'authorization': `${localStorage.getItem('token')}`,
+        },
+      }).then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('error in fatching list');
+        }
+      }).then((data) => {
+        console.log(data);
+      })
+      .catch ((error) => {
+        console.error(error);
+      });
+    };
+    useEffect(() => {
+      fetchProjects();
+    }, []);
+
 
   const addProject = async () => {
-    const project = { name: projectName, description: projectDescription, type: projectType, members: projectMembers };
+    const project = { name: projectName, description: projectDescription, type: projectType };
     // if (editIndex !== null) {
     //   const updatedProjects = [...projects];
     //   updatedProjects[editIndex] = project;
@@ -35,7 +62,7 @@ function CreateProjectModal() {
         headers: {
           'Content-Type': 'application/json',
           "authorization": `"${localStorage.getItem("token")}"`,
-        }
+        },
       })
       .then(response => response.json())
       .then((response) => {
@@ -58,7 +85,8 @@ function CreateProjectModal() {
       .catch((error) => {
         console.log(error);
         alert("not created.");
-      })
+      });
+      fetchProjects();
 
     if (typeof window !== 'undefined') {
       localStorage.setItem('projects', JSON.stringify([...projects, project]));
@@ -155,6 +183,10 @@ function CreateProjectModal() {
                     <div>
                       <strong>Role:</strong> {members.role}
                     </div>
+                    {/* <div>
+                      {handleAddMember()}
+                    </div> */}
+                    {/* <AddMembers onAddMember={handleAddMember}/> */}
                     <button onClick={() => deleteMember(index)}>
                       Remove Member
                     </button>

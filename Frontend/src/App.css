@@ -3,8 +3,18 @@
   padding:0;
   text-decoration: none;
 }
+
+html, body {
+  height: 100%;
+  background: #fff;
+}
+
 .container{
   display:flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
 }
 main{
   width: 100%;
@@ -48,4 +58,28 @@ main{
 }
 .icon, .link_text{
   font-size: 20px;
+}
+
+.landing-page {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.landing-content {
+  text-align: center;
+}
+
+.landing-image {
+  margin-top: 300px;
+  max-width: 300%;
+  max-height: 500px;
+  margin-bottom: 60px;
+}
+
+.landing-text {
+  font-size: 40px;
+  color: #0c54b9;
 }

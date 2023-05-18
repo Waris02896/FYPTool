@@ -13,8 +13,10 @@ const AddMembers = ({ onAddMember }) => {
   };
 
   const handleAddMember = () => {
+    console.log('function chal raha hai');
     console.log(`Adding ${selectedUser} as ${selectedRole}`);
     onAddMember(selectedUser, selectedRole); // Pass the selected user and role to the parent component
+    
   };
 
   return (
@@ -38,7 +40,7 @@ const AddMembers = ({ onAddMember }) => {
           <option value="viewer">Viewer</option>
         </select>
       </label>
-      <button disabled={!selectedUser || !selectedRole} onClick={handleAddMember}>
+      <button onClick={handleAddMember}>
         Add Member
       </button>
     </div>

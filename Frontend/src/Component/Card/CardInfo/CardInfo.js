@@ -14,8 +14,8 @@ import "./CardInfo.css";
 // import axios from 'axios';
 
 async function fetchData() {
-  try{
-    const response = await fetch("http://localhost:3000/fyp/taskCategories",{
+  try {
+    const response = await fetch("http://localhost:3000/fyp/taskCategories", {
       method: "GET",
       headers: {
         "authorization": `"${localStorage.getItem("token")}"`,
@@ -48,8 +48,8 @@ function CardInfo(props) {
     "#cf61a1",
     "#240959",
   ];
-  
-  
+
+
   // await fetch('http://localhost:3000/fyp/taskCategories',
   // {
   //   method: 'GET',
@@ -62,8 +62,8 @@ function CardInfo(props) {
   // .catch(err => console.error(err));
   // }
 
-  
-  
+
+
   const updateTitle = (value) => {
     setValues({ ...values, title: value });
   };
@@ -131,7 +131,7 @@ function CardInfo(props) {
     });
   };
   const [filteredTasks, setFilteredTasks] = useState([]);
-  
+
   const categories = [
     { id: 25, name: "Task" },
     { id: 26, name: "Bug" },

@@ -159,7 +159,7 @@ const SignIn = () => {
           // token = token.slice(0, token.length - 1);
           localStorage.setItem('token', token);
           console.log(localStorage.getItem('token'))
-          navigate("/student-board");
+          navigate("/createproject");
         }
         else if (response.error && response.error.errorMessage) {
           alert(response.error.errorMessage);

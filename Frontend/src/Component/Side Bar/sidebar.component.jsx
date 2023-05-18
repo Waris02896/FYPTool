@@ -13,7 +13,7 @@ const Sidebar = ({children}) => {
     const menuItem=[
         {
             path:"/createproject",
-            name:"Create Project",
+            name:"Projects",
             icon:<FaTh/>
         },
         {
