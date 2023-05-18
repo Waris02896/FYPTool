@@ -40,7 +40,6 @@ exports.createProject = async (req, res) => {
     )
         .then(async (data) => {
             if (data) {
-                console.log("Working")
                 let teamData = await team.create(
                     {
                         project_id: `${reqData.name.substring(0, 3)}-${project_id}`,

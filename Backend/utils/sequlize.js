@@ -52,6 +52,7 @@ db.Users = require('../data/models/Auth/users')(sequelize, DataTypes);
 db.Projects = require('../data/models/project/project')(sequelize, DataTypes);
 db.ProcessCard = require('../data/models/project/process')(sequelize, DataTypes);
 db.Team = require('../data/models/project/team')(sequelize, DataTypes);
+db.Task = require('../data/models/task/tasks')(sequelize, DataTypes);
 
 //Relations
 // db.Users.belongsToMany(

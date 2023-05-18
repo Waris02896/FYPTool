@@ -1,4 +1,4 @@
-const { UNAUTHORIZED, INTERNAL_SERVER_ERROR, OK } = require("readable-http-status-codes");
+const { UNAUTHORIZED, INTERNAL_SERVER_ERROR, OK, NOT_FOUND } = require("readable-http-status-codes");
 const { db } = require("../../utils/sequlize");
 const team = db.Team;
 const project = db.Projects;
@@ -18,55 +18,64 @@ exports.addUser = async (req, res) => {
             // return res.json({
             //     projectData
             // })
-            let teamData = await team.findOne(
-                {
-                    where: {
-                        project_id: reqData.project_id,
-                        user_id: reqData.User.aud,
-                        rights: "Project Manager"
+            if(projectData != null){
+                let teamData = await team.findOne(
+                    {
+                        where: {
+                            project_id: reqData.project_id,
+                            user_id: reqData.User.aud,
+                            rights: "Project Manager"
+                        }
                     }
-                }
-            )
-                .then(async (teamData) => {
-                    if (teamData) {
-                        let teams = await team.create(
-                            {
-                                project_id: reqData.project_id,
-                                user_id: reqData.user_id,
-                                rights: reqData.rights
-                            }
-                        )
-                            .then((teams) => {
-                                // return res.json({
-                                //     team
-                                // })
-                                return res.status(OK).json({
-                                    data: {
-                                        response: "Member added to the project",
-                                        teams
-                                        // teams
-                                    }
-                                });
+                )
+                    .then(async (teamData) => {
+                        if (teamData != null) {
+                            let teams = await team.create(
+                                {
+                                    project_id: reqData.project_id,
+                                    user_id: reqData.user_id,
+                                    rights: reqData.rights
+                                }
+                            )
+                                .then((teams) => {
+                                    // return res.json({
+                                    //     team
+                                    // })
+                                    return res.status(OK).json({
+                                        data: {
+                                            response: "Member added to the project",
+                                            teams
+                                            // teams
+                                        }
+                                    });
 
-                            })
-                    } 
-                    // else if (teamData.length == 0) {
-                    //     return res.status.json({
-                    //         error: {
-                    //             errorMessage: "You are not part of project team"
-                    //         }
-                    //     });
-                    // }
-                })
-                .catch((err) => {
-                    
-                    return res.status(INTERNAL_SERVER_ERROR).json({
-                        error: {
-                            errorMessage: "You are not part of Project",
-                            err
+                                })
+                        }
+                        else if (teamData.length == null) {
+                            return res.status.json({
+                                error: {
+                                    errorMessage: "You are not part of project team"
+                                }
+                            });
                         }
                     })
+                    .catch((err) => {
+
+                        return res.status(INTERNAL_SERVER_ERROR).json({
+                            error: {
+                                errorMessage: "You are not part of Project",
+                                err
+                            }
+                        })
+                    })
+            }else if(projectData == null){
+                return res.status(NOT_FOUND).json({
+                    error:{
+                        errorMessage:"Project not available"
+                    }
                 })
+            }
+
         })
         .catch((err) => {
             return res.status(INTERNAL_SERVER_ERROR).json({
