@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const AddMembers = ({ onAddMember }) => {
-  const [selectedUser, setSelectedUser] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
+  const [selectedUserId, setselectedUserId] = useState('');
+  const [selectedRight, setselectedRight] = useState('');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const projectId = searchParams.get('id');
 
   const handleUserChange = (event) => {
-    setSelectedUser(event.target.value);
+    setselectedUserId(event.target.value);
   };
 
   const handleRoleChange = (event) => {
-    setSelectedRole(event.target.value);
+    setselectedRight(event.target.value);
   };
 
   const handleAddMember = async () => {
-    const members = { email: selectedUser, role: selectedRole};
+    const members = { email: selectedUserId, role: selectedRight};
     // if (editIndex !== null) {
     //   const updatedProjects = [...projects];
     //   updatedProjects[editIndex] = project;
@@ -23,8 +27,8 @@ const AddMembers = ({ onAddMember }) => {
     //   setProjects([...projects, project]);
     // }
     //setShowModal(false);
-    setSelectedUser('');
-    setSelectedRole('');
+    setselectedUserId('');
+    setselectedRight('');
     //setProjectType('');
     //setProjects([...projects, project]);
     
@@ -36,14 +40,15 @@ const AddMembers = ({ onAddMember }) => {
         'authorization':`"${localStorage.getItem("token")}"`,
       },
       body: JSON.stringify({
-        user: selectedUser,
-        role: selectedRole,
+        user_id: selectedUserId,
+        rights: selectedRight,
+        project_id: projectId
       }),
     })
     .then((response) => {
-      if(response.ok) {
+      if(response.data.response != null) {
         console.log("Member added succesfully");
-        onAddMember(selectedUser, selectedRole);
+        onAddMember(selectedUserId, selectedRight);
       }
       else {
         console.log("Failed to add member");
@@ -61,17 +66,17 @@ const AddMembers = ({ onAddMember }) => {
     <div>
       <h2>Add Members</h2>
       <label>
-        Email:
+        User_id:
         <input
           type="email"
-          value={selectedUser}
+          value={selectedUserId}
           onChange={handleUserChange}
-          placeholder="Enter email"
+          placeholder="Enter user_id"
         />
       </label>
       <label>
-        Role:
-        <select value={selectedRole} onChange={handleRoleChange}>
+        Rights:
+        <select value={selectedRight} onChange={handleRoleChange}>
           <option value="">Select a role</option>
           <option value="owner">Owner</option>
           <option value="editor">Editor</option>

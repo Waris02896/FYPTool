@@ -13,6 +13,7 @@ function CreateProjectModal() {
   const [projectMembers, setProjectMembers] = useState([]);
   //const [selectedUser, setSelectedUser] = useState('');
   //const [selectedRole, setSelectedRole] = useState('');
+  const [projectId, setProjectId] = useState(0);
 
   const fetchProjects = async () => {
    fetch('http://localhost:3000/fyp/projectList', {
@@ -39,7 +40,7 @@ function CreateProjectModal() {
 
 
   const addProject = async () => {
-    const project = { name: projectName, description: projectDescription, type: projectType };
+    const project = { id: projectId,name: projectName, description: projectDescription, type: projectType };
     // if (editIndex !== null) {
     //   const updatedProjects = [...projects];
     //   updatedProjects[editIndex] = project;
@@ -48,6 +49,7 @@ function CreateProjectModal() {
     // } else {
     //   setProjects([...projects, project]);
     // }
+    setProjectId(projectId + 1);
     setShowModal(false);
     setProjectName('');
     setProjectDescription('');
@@ -137,19 +139,32 @@ function CreateProjectModal() {
     localStorage.setItem('projects', JSON.stringify(updatedProjects));
   };
 
-  const getProjectsFromLocalStorage = () => {
-    let projectsFromLocalStorage;
-    if (typeof window !== 'undefined') {
-      projectsFromLocalStorage = localStorage.getItem('projects');
-    }
+  useEffect(() => {
+    const projectsFromLocalStorage = localStorage.getItem('projects');
     if (projectsFromLocalStorage) {
-      setProjects(JSON.parse(projectsFromLocalStorage));
-    }
-  };
+      const parsedProjects = JSON.parse(projectsFromLocalStorage);
+      setProjects(parsedProjects);
 
-  React.useEffect(() => {
-    getProjectsFromLocalStorage();
+      const maxProjectId = parsedProjects.reduce((maxId, project) => Math.max(maxId, project.id), 0);
+      setProjectId(maxProjectId + 1);
+
+      console.log(localStorage);
+    }
   }, []);
+
+  // const getProjectsFromLocalStorage = () => {
+  //   let projectsFromLocalStorage;
+  //   if (typeof window !== 'undefined') {
+  //     projectsFromLocalStorage = localStorage.getItem('projects');
+  //   }
+  //   if (projectsFromLocalStorage) {
+  //     setProjects(JSON.parse(projectsFromLocalStorage));
+  //   }
+  // };
+
+  // React.useEffect(() => {
+  //   getProjectsFromLocalStorage();
+  // }, []);
 
   // const handleEditClick = (index) => {
   //   setEditIndex(index);
@@ -167,14 +182,15 @@ function CreateProjectModal() {
       <ul>
         {projects.map((project, index) => (
           <li key={index}>
+            <div><strong>Id:</strong> {project.id}</div>
             <div><strong>Name:</strong> {project.name}</div>
             <div><strong>Description:</strong> {project.description}</div>
             <div><strong>Type:</strong> {project.type}</div>
             <div>
               <Link to={`/student-board`}>View</Link>
               {/* <button name ="edit" onClick={() => handleEditClick(index)}>Edit</button> */}
-              <Link to={'/addmember'}>Add Member</Link>
-              <Link to={'/processcard'}>Add Process Card</Link>
+              <Link to={`/addmember?id={project.project_id}`}>Add Member</Link>
+              <Link to={`/processcard?id={project.id}`}>Add Process Card</Link>
               <button name="delete" onClick={() => deleteProject(index)}>Delete</button>
             </div>
             <div>
