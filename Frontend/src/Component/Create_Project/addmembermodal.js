@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 const AddMembers = ({ onAddMember }) => {
   const [selectedUser, setSelectedUser] = useState('');
   const [selectedRole, setSelectedRole] = useState('');
-  const [projectMembers, setProjectMembers] = useState([]);
-
 
   const handleUserChange = (event) => {
     setSelectedUser(event.target.value);
@@ -14,17 +12,49 @@ const AddMembers = ({ onAddMember }) => {
     setSelectedRole(event.target.value);
   };
 
-  const deleteMember = (index) => {
-    const updatedMembers = [...projectMembers];
-    updatedMembers.splice(index, 1);
-    setProjectMembers(updatedMembers);
-  };
+  const handleAddMember = async () => {
+    const members = { email: selectedUser, role: selectedRole};
+    // if (editIndex !== null) {
+    //   const updatedProjects = [...projects];
+    //   updatedProjects[editIndex] = project;
+    //   setProjects(updatedProjects);
+    //   setEditIndex(null);
+    // } else {
+    //   setProjects([...projects, project]);
+    // }
+    //setShowModal(false);
+    setSelectedUser('');
+    setSelectedRole('');
+    //setProjectType('');
+    //setProjects([...projects, project]);
+    
+    await fetch('http://localhost:3000/fyp/addUser',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type':'application/json',
+        'authorization':`"${localStorage.getItem("token")}"`,
+      },
+      body: JSON.stringify({
+        user: selectedUser,
+        role: selectedRole,
+      }),
+    })
+    .then((response) => {
+      if(response.ok) {
+        console.log("Member added succesfully");
+        onAddMember(selectedUser, selectedRole);
+      }
+      else {
+        console.log("Failed to add member");
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
 
-  const handleAddMember = () => {
-    console.log('function chal raha hai');
-    console.log(`Adding ${selectedUser} as ${selectedRole}`);
-    onAddMember(selectedUser, selectedRole); // Pass the selected user and role to the parent component
-
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('members', JSON.stringify([...members, members]));
+    }
   };
 
   return (
@@ -51,29 +81,6 @@ const AddMembers = ({ onAddMember }) => {
       <button onClick={handleAddMember}>
         Add Member
       </button>
-
-      <div>
-        <h3>Members:</h3>
-        <ul>
-          {projectMembers.map((members, index) => (
-            <li key={index}>
-              <div>
-                <strong>Email:</strong> {members.email}
-              </div>
-              <div>
-                <strong>Role:</strong> {members.role}
-              </div>
-              {/* <div>
-                      {handleAddMember()}
-                    </div> */}
-              {/* <AddMembers onAddMember={handleAddMember}/> */}
-              <button onClick={() => deleteMember(index)}>
-                Remove Member
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };
